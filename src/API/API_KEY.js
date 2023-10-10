@@ -10,7 +10,6 @@ export async function getMovieTrends(currentPage) {
 
     const { data } = await axios.get(`trending/movie/day?api_key=${API_KEY}&page=${currentPage}`);
 
-
     return data.results;
 
   } catch (error) {
@@ -21,10 +20,7 @@ export async function getMovieTrends(currentPage) {
 }
 
 export async function getMovieByQuery (query) {
-
-
   try {
-
     const {data} = await axios.get(`search/movie?api_key=${API_KEY}&query=${query}`);
 
     return data.results;
@@ -61,7 +57,6 @@ export async function getCastById(id) {
     );
   }
 }
-
 
 export async function getReviewsById (id) {
 
