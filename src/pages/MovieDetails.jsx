@@ -43,7 +43,8 @@ const MovieDetails = () => {
       <MovieCard
         posterPath={posterPath}
         title={title}
-        vote_average={overview}
+        vote_average={vote_average}
+        overview={overview}
         genreNames={genreNames}
       />
       {loader && <Loader />}
