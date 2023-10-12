@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getReviewsById } from '../../services/theMoiveApi';
+import { getReviewsById } from '../../API/API_KEY';
 import { List, Item, Title } from './Reviews.styled';
 import Loader from 'components/Loader/Loader';
 import Error from '../Error/Error';
