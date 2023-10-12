@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getReviewsById } from 'API/API_KEY';
+import { getReviewsById } from '../../services/theMoiveApi';
 import { List, Item, Title } from './Reviews.styled';
 import Loader from 'components/Loader/Loader';
-import Error from 'components/Error/Error';
+import Error from '../Error/Error';
 import { Notify } from 'notiflix';
 
 const Reviews = () => {
   const { movieId } = useParams();
-  const { loader, setLoader } = useState(false);
-  const { reviews, setReviews } = useState({});
+  const [loader, setLoader] = useState(false);
+  const [reviews, setReviews] = useState({});
   const [failure, setFailure] = useState(false);
 
   useEffect(() => {
@@ -25,9 +25,12 @@ const Reviews = () => {
         setLoader(false);
       }
     };
+
     fetchReviews();
   }, [movieId]);
+
   const { results } = reviews;
+
   return (
     <div>
       {loader && <Loader />}
@@ -47,5 +50,4 @@ const Reviews = () => {
     </div>
   );
 };
-
 export default Reviews;
