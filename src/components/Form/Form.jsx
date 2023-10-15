@@ -1,31 +1,33 @@
 import { useState } from 'react';
-import { Notify } from 'notiflix';
+import { InputSearch, ButtonSearch } from './Form.module';
 
 const Form = ({ setSearchParams }) => {
   const [query, setQuery] = useState('');
 
-  const handleChange = e => {
-    setQuery(e.target.value);
-  }
-
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (query.trim() === '') {
-      return Notify.failure('query can`t be empty');
-    }
+
     setSearchParams({ query });
+  };
+
+  const handleSearchParams = ({ target: { value } }) => {
+    setQuery(value);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-
-      <input value={query} autoFocus onChange={e => handleChange(e)} name='text' />
-      <button type='submit'>Search</button>
-
+      <InputSearch
+        type="text"
+        placeholder="Name movie"
+        autoFocus
+        value={query}
+        onChange={handleSearchParams}
+      />
+      <ButtonSearch type="submit" disabled={!query}>
+        Search
+      </ButtonSearch>
     </form>
-  )
-}
+  );
+};
 
 export default Form;
-
-

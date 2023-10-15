@@ -1,64 +1,52 @@
 import { useEffect, useState } from 'react';
-import { getCastById } from 'API/API_KEY';
 import { useParams } from 'react-router-dom';
-import { List, Item, Title, SubTitle } from './Cast.styled';
-import Placeholder from 'components/Placeholder/Placeholder';
-import Loader from 'components/Loader/Loader';
-import Error from 'components/Error/Error';
-import { Notify } from 'notiflix';
-
+import { getCastMovie } from 'services/getMovies';
+import { BASE_POSTER_URL, PLACEHOLDER } from 'utils/constants';
+import { ListItem, StyledList } from './Cast.module';
 
 const Cast = () => {
   const { movieId } = useParams();
-  const [casts, setCasts] = useState({});
-  const [loader, setLoader] = useState(false);
-  const [failure, setFailure] = useState(false);
+
+  const [cast, setCast] = useState([]);
 
   useEffect(() => {
-    const fetchCasts = async () => {
+    const fetchCast = async () => {
       try {
-        setLoader(true);
-        const castsData = await getCastById(movieId);
-        setCasts(castsData);
-      } catch (error) {
-        setFailure(true);
-        Notify.failure(error.message);
-      } finally {
-        setLoader(false);
+        const cast = await getCastMovie(movieId);
+        setCast(cast);
+      } catch (e) {
+        console.log(e);
       }
     };
-
-    fetchCasts();
+    fetchCast();
   }, [movieId]);
 
-  const { cast } = casts;
-
   return (
-    <div>
-      {loader && <Loader />}
-      {failure && <Error />}
-      {cast && (
-        <List>
-          {cast.map(({ id, name, character, profile_path }) => (
-            <Item key={id}>
-              {profile_path ? (
-                <img
-                  src={`https://image.tmdb.org/t/p/w200${profile_path}`}
-                  alt={name}
-                  width="200"
-                />
-              ) : (
-                <Placeholder title="Photo" />
-              )}
-              <Title>{name}</Title>
-              <SubTitle>{character}</SubTitle>
-            </Item>
+    <>
+      {
+        <StyledList>
+          {cast.map(({ id, profile_path, original_name, character }) => (
+            <ListItem key={id}>
+              <img
+                src={`${
+                  profile_path
+                    ? BASE_POSTER_URL + profile_path
+                    : PLACEHOLDER + '?text=' + original_name
+                }`}
+                alt={original_name}
+              />
+              <p>
+                <span> Actor:</span> {original_name}
+              </p>
+              <p>
+                <span>Character:</span> {character}
+              </p>
+            </ListItem>
           ))}
-        </List>
-      )}
-    </div>
+        </StyledList>
+      }
+    </>
   );
 };
 
 export default Cast;
-

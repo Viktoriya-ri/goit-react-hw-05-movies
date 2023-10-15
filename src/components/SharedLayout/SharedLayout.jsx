@@ -1,23 +1,30 @@
 import { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
-import { Header, Nav, StyledNavLink } from './SharedLayout.styled';
-import { FcHome, FcFilmReel } from 'react-icons/fc';
-import Loader from 'components/Loader/Loader';
+import { Outlet, Link } from 'react-router-dom';
+import { Container, NavItem, NavList, Navigation } from './SharedLayout.module';
 
 const SharedLayout = () => {
   return (
-    <div>
-      <Header>
-        <Nav>
-          <StyledNavLink to='/'><FcHome size='22' />Home</StyledNavLink>
-          <StyledNavLink to='/movies'><FcFilmReel size='22' />Movies</StyledNavLink>
-        </Nav>
-      </Header>
-      <Suspense fallback={<Loader />}>
+    <Container>
+      <header>
+        <Navigation>
+          <NavList>
+            <NavItem>
+              <Link to="/">
+                Home<span>.</span>
+              </Link>
+            </NavItem>
+            <NavItem>
+              <Link to="/movies">
+                Movies<span>.</span>
+              </Link>
+            </NavItem>
+          </NavList>
+        </Navigation>
+      </header>
+      <Suspense fallback={<div>Loading page...</div>}>
         <Outlet />
       </Suspense>
-
-    </div>
+    </Container>
   );
 };
 
